@@ -76,7 +76,7 @@ def collect_from_1000mostcommonwords_com():
             else:
                 print('    WARNING: dropping word', word_row)
         assert 990 < len(lang_value) <= 1000
-        result[lang_key] = lang_value
+        result[lang_key.strip()] = lang_value
     print('    Site complete.')
     return result
 
