@@ -70,7 +70,7 @@ def fold_rating(rating, min_confidence=None):
     lang, matches = max(rating.items(), key=get_normal_matches)
 
     # Ignore any very low confidence result.
-    if rating['__total__'] == 0:
+    if rating['__total__'] == 0 or lang == '__total__':
         return (None, 0.0)
     confidence = matches / rating['__total__']
     if min_confidence is None:
