@@ -5,10 +5,7 @@
 Assume you have some text.  Any text.  And you want to determine the language.
 
 `ear` listens to what you give it.  Well, it reads it,
-but the metaphor works better with "listening" instead of "looking at it".
-
-This was mostly motivated because someone said "Oh I know!  I'm gonna use Markov chains!".
-I think this is a much simpler, far more reliable way to do it.
+but the metaphor works better with "listening" than "looking".
 
 ## Table of Contents
 
@@ -20,22 +17,23 @@ I think this is a much simpler, far more reliable way to do it.
 
 ## Background
 
-Example: you have some kind of input, and for further processing (or proper display or whatever)
-you would like to know the human language of it.
+This was mostly motivated because someone said "I'm gonna use Markov chains!".
+I think this is a much simpler, far more reliable way to do it.
 
 ## Install
 
 This is a drag-and-drop library.  Put it where you need it, and be happy.
-
-More specifically:
-In other words: Copy `ear-db.json`, or hard-code it in the appropriate place in `ear.py`.
-Then, copy `ear.py` into your project and use it like it's your own code.
+Don't forget `digested.json.xz`.
+If you dislike the load time, re-compress it to something else.
 
 ## Usage
 
 For small passages of text, just call `ear.get_language(text)`.
 
-For large passages (when memory starts to become an issue, or you need parallelism for some reason),
+The result will be an ISO 639-2 code, optionally followed by `-` and the country code.
+See `wortschatz-uni-leipzig-de.ls` for the list of known languages.
+
+For large bodies of text (when memory starts to become an issue, or you need parallelism for some reason),
 you may want to process it by parts:
 
 ```py3
@@ -51,10 +49,39 @@ Just use it!
 The complexity lies in collecting the data and applying it properly.
 Usage is just a function call.
 
+## State of the ear
+
+All the major languages are properly recognized.
+
+The folder `tests/` contains the frontpages of all wikipedias with at least 1 million articles.
+This is my definition of "major language".
+
+Given that I didn't special-case these languages, and that I tried to avoid Wikipedia when picking word-files,
+I believe that `ear` should reasonably do well for many other languages.
+
+### Detailed test results
+
+- ceb: ceb (256), tgl (172) → Reasonable; similar language
+- de: deu (207), gsw-ch (175) → Reasonable; similar language
+- en: eng (567), tgl (497) → Meh, dirty word source (claims that words like "birthday" and "The" and "commission" are Tagalog.)
+- es: spa (578), arg (494) → Reasonable; similar language
+- fr: fra (498), ltz (307) → Reasonable; similar language
+- it: ita (780), arg (405) → Reasonable; sufficiently large distance
+- ja: jpn (16), zho (5) → Not great; need more samples of Japanese
+- nl: nld (362), lim-nl (344), fry (299) → Reasonable; to some extent they are the same language anyway
+- pl: pol (337), slk (113) → Reasonable; sufficiently large distance
+- pt: por (596), glg (437), pus (422) → Huh.  No idea
+- ru: rus (364), ukr (152) → Reasonable; sufficiently large distance
+- sv: swe (489), nor (357), dan (268) → Reasonable; sufficiently large distance, but also similar language
+- vi: vie (601), lus (30) → Reasonable; Reasonable; sufficiently large distance
+- war: ceb (85), war (71), tgl (66) → Reasonable; similar language
+- zh: zho (5) → Not great; need more samples of Chinese
+
 ## TODOs
 
 * Make the installation even easier.
-For example, let `construct.py` merge `ear.py` and `ear-db.json` into `dist/ear-with-batteries.py` or something.
+* Get better samples for Chinese, Japanese, Tagalog
+* Understand why Portuguese, Gaelician, and Pashto seem to be so similar
 
 ## Contribute
 

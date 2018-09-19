@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import detect as ear
+import ear
 import os
 
 
