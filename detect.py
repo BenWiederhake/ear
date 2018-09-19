@@ -2,33 +2,15 @@
 
 from collections import defaultdict
 import json
+import lzma
 
 
-# == BEGIN REPLACE ==
-# Do not touch the previous line.
-# This part will be replaced by a constant.  Essentially collected.json.
-
-def digest_data():
-    """
-    Load collected.json and parse it.
-    Only used when not auto-generated yet.
-    """
-    with open('collected.json', 'r') as fp:
-        collected_raw = json.load(fp)
-    digested = defaultdict(list)
-    for (lang, wordlist) in collected_raw.items():
-        for word in wordlist:
-            digested[word].append(lang)
-    # When replacing, I would like to substitude a plain dict,
-    # and avoid constructing a defaultdict
-    return dict(digested)
+def load_data():
+    with lzma.open('digested.json.xz', 'rt') as fp:
+        return json.load(fp)
 
 
-COLLECTED_DIGESTED = digest_data()
-
-# Do not touch the next line.
-# == END REPLACE ==
-
+COLLECTED_DIGESTED = load_data()
 MIN_REQUIRED_CONFIDENCE = 0.01
 
 
