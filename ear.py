@@ -3,6 +3,7 @@
 from collections import defaultdict
 import json
 import lzma
+import sys
 
 
 def load_data():
@@ -71,3 +72,41 @@ def get_language(text):
     rating = null_rating()
     rate_text(text, rating)
     return fold_rating(rating)
+
+
+def run(args):
+    if args == ['--help']:
+        print('USAGE: ear.py { --reason | --no-reason | FILE }*')
+        return
+    if args == []:
+        args = ['-']
+    print_reason = False
+    for arg in args:
+        if arg == '--reason':
+            print_reason = True
+            continue
+        if arg == '--no-reason':
+            print_reason = False
+            continue
+        if arg == '-':
+            text = sys.stdin.read()
+        else:
+            with open(arg, 'r') as fp:
+                text = fp.read()
+        if print_reason:
+            rating = null_rating()
+            rate_text(text, rating)
+            lang, confidence = fold_rating(rating)
+            result = list(rating.items())
+            result.sort(reverse=True, key=lambda e: e[1])
+            reason = ', or '.join('{} ({})'.format(rname, rconf)
+                                  for (rname, rconf) in result)
+            print('{}: probably "{}" ({}).  Reason: {}'.format(
+                arg, lang, confidence, reason))
+        else:
+            lang, confidence = get_language(text)
+            print('{}: probably "{}" ({}).'.format(arg, lang, confidence))
+
+
+if __name__ == '__main__':
+    run(sys.argv[1:])

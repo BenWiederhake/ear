@@ -12,6 +12,7 @@ but the metaphor works better with "listening" than "looking".
 - [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
+- [State of the ear](#state-of-the-ear)
 - [TODOs](#todos)
 - [Contribute](#contribute)
 
@@ -28,6 +29,8 @@ If you dislike the load time, re-compress it to something else.
 
 ## Usage
 
+### Usage as a library
+
 For small passages of text, just call `ear.get_language(text)`.
 
 The result will be an ISO 639-2 code, optionally followed by `-` and the country code.
@@ -41,13 +44,31 @@ parts = ...  # Input
 rating = ear.null_rating()
 for chunk in parts:
     ear.rate_text(chunk, rating)
-lang = ear.simplify_rating(rating)
+lang, confidence = ear.fold_rating(rating)
 print('Language seems to be ' + lang)  # Output
 ```
 
 Just use it!
 The complexity lies in collecting the data and applying it properly.
 Usage is just a function call.
+
+### Usage as a stand-alone executable
+
+Due to the long load time (seconds), this may be a bad idea.
+
+But you can use it like this:
+
+```
+$ ./ear.py README.md
+README.md: probably "eng" (0.4759299781181619).
+```
+
+And to show off the other features:
+
+```
+$ ./ear.py --reason - < README.md
+-: probably "eng" (0.4759299781181619).  Reason: __total__ (914), or eng (435), or tgl (380), or knn-in (377), or ceb (350), or lus (335), or cym (331), or pap (327), or jav-id (322), or ltz (321), or lim-nl (316), or ast (313), or som (309), or arg (308), or dan (308), or mri-nz (304), or ron (297), or sqi (290), or xho (289), or swa (287), or gle (286), or msa (276), or als-sqi (274), or por (264), or fry (264), or tur (260), or slv (259), or ita (258), or mlt (249), or isl (249), or tam (235), or war (233), or amh (227), or est (223), or nor (219), or uzb (218), or afr (211), or rus (210), or epo (210), or hin (209), or gsw-ch (207), or bul (202), or mon (197), or aze (192), or guj (192), or fra (184), or hrv (180), or ind (180), or gom (168), or swe (164), or bos (162), or cat (161), or vie (160), or spa (155), or slk (147), or pol (145), or sna-zw (143), or hat-ht (142), or ces (141), or glg (139), or cmn (137), or azj-az (136), or fao (136), or zul (134), or hun (133), or tha (132), or fin (121), or lit (118), or hye (114), or jpn (113), or yid (112), or lav (112), or lug (111), or pus (110), or srp-rs (109), or eus (108), or kal (106), or zho (105), or ell (105), or kor (97), or nld (87), or fas (87), or tgk (87), or heb (83), or bak (79), or kan (78), or pes-ir (77), or ara (73), or kir (72), or pan-in (69), or urd (69), or deu (68), or kat (66), or san (66), or mkd (58), or kaz (50), or bel (49), or ukr (46), or mal (34), or tat (33), or tuk-tm (31), or div (31), or ben (27), or tel (11), or mar (3)
+```
 
 ## State of the ear
 
