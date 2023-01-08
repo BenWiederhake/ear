@@ -1,11 +1,9 @@
 # ear
 
-> Listen to the words and reliably detect the human language in which they are written.
-
-Assume you have some text.  Any text.  And you want to determine the language.
-
-`ear` listens to what you give it.  Well, it reads it,
-but the metaphor works better with "listening" than "looking".
+Reliably detects the natural language of a short text, including some
+confidence indicators. This project is a Proof-of-Concept that no "advanced AI
+machine learning frequency statistics analysis whatever" is necessary. It
+proves that language detection is actually quite simple.
 
 ## Table of Contents
 
